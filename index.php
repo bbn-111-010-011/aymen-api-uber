@@ -57,4 +57,3 @@ if (empty($_GET["page"])) {
             echo "La page n'existe pas";
     }
 }
-eefezfesfesfsfesf
