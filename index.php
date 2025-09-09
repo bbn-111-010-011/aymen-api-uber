@@ -15,6 +15,7 @@ if (empty($_GET["page"])) {
     // On découpe cette chaîne en segments, en séparant sur le caractère "/"
     // Cela donne un tableau, ex : ["chauffeurs", "3"]
     $url = explode("/", $_GET['page']);
+    $method = $_SERVER["REQUEST_METHOD"];
     
     // Affiche le contenu du tableau pour vérifier comment l’URL est interprétée
     //print_r($url);
@@ -22,14 +23,23 @@ if (empty($_GET["page"])) {
     // On teste le premier segment pour déterminer la ressource demandée
     switch($url[0]) {
         case "chauffeurs" : 
-            // Si un second segment est présent (ex: un ID), on l’utilise
-            if (isset($url[1])) {
-                // Exemple : /chauffeurs/3 → affiche les infos du chauffeur 3
-                $chauffeurController->getChauffeurById($url[1]);
-            } else {
-                // Sinon, on affiche tous les chauffeurs
-                $chauffeurController->getAllChauffeurs();
+            switch ($method) {
+                case "GET":
+                    // Si un second segment est présent (ex: un ID), on l’utilise
+                    if (isset($url[1])) {
+                        // Exemple : /chauffeurs/3 → affiche les infos du chauffeur 3
+                        $chauffeurController->getChauffeurById($url[1]);
+                    } else {
+                        // Sinon, on affiche tous les chauffeurs
+                        $chauffeurController->getAllChauffeurs();
+                    }
+                    break;
+                case "POST":
+                    $data = json_decode(file_get_contents("php://input"), true);
+                    $chauffeurController->createChauffeur($data);
+                    break;
             }
+           
             break;
         case "clients":
             if (isset($url[1])) {
