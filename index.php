@@ -2,6 +2,7 @@
 // Vérifie si le paramètre "page" est vide ou non présent dans l'URL
 if (empty($_GET["page"])) {
     // Si le paramètre est vide, on affiche un message d'erreur
+    echo "La ressource demandée n'existe pas.";
     echo "gCette page est introuvable.";
 } else {
     // Sinon, on récupère la valeur du paramètre "page"
